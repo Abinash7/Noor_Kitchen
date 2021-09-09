@@ -1,0 +1,50 @@
+#wrapper {
+    width: 280px;
+    margin: 0 auto;
+    color: #000;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 12px;
+}
+#shop_address,
+#shop_name,
+#shop_pan,
+#contact_number,
+#tax_invoice,
+.receipt_footer {
+    text-align: center;
+}
+.tb-sale-details,
+.tb-sale-total {
+    width: 100%;
+    border-spacing: 0;
+    margin-top: 10px;
+}
+.tb-sale-details {
+    text-align: center;
+}
+.tb-sale-details th {
+    border-bottom: 1px solid #000;
+}
+.tb-sale-total td {
+    padding: 5px 0;
+    padding-left: 1.5%;
+    border-bottom: 1px solid #000;
+}
+.tb-sale-total {
+    background-color: #ccc;
+}
+.btn {
+    width: 100%;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+}
+.btn-print {
+    background-color: #ffa93c;
+}
+.btn-back {
+    background-color: #4fa950;
+}
