@@ -12,7 +12,7 @@ class Sale extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'user_name', 'vehicle_number', 'customer_name', 'customer_number', 'total_price', 'total_received', 'change', 'sale_status','payment_type'];
+    protected $fillable = ['user_id', 'user_name', 'vehicle_number', 'customer_id', 'total_price', 'total_received', 'change', 'sale_status','payment_type'];
 
     protected function serializeDate(DateTimeInterface $date)
     {
@@ -23,5 +23,10 @@ class Sale extends Model
     public function saleDetails()
     {
         return $this->hasMany(SaleDetail::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Client::class);
     }
 }

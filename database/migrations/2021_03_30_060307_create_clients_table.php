@@ -18,7 +18,7 @@ class CreateClientsTable extends Migration
             $table->string('client_name');
             $table->string('client_address');
             $table->bigInteger('contact_number');
-            $table->bigInteger('customer_vat');
+            $table->bigInteger('customer_vat')->nullable();
             $table->timestamps();
         });
     }

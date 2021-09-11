@@ -29,7 +29,7 @@
             <p>Invoice Number: <strong>{{$sales->id}}</strong></p>
             <p class="right_side">Date: {{date('Y-m-d')}}</p>
             <br>
-            <p>Customer: {{$sales->customer_name}}</p>
+            <p>Customer: {{$sales->customer->client_name}}</p>
             <p class="right_side">User ID: {{$user->staff_id}}</p> 
             <br>           
             <p>Sold By: {{$sales->user_name}}</p>

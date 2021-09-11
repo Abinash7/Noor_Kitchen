@@ -84,7 +84,12 @@
                 <div class="modal-body">
                     <h4 class="totalAmount"></h4>
                     <div class="input-group mb-3">
-                        <input type="text" id="customer_name" class="form-control" placeholder="Enter Customer Name" required>
+                        <select name="customer_id" id="customer_id" class="form-control customer_id">
+                            <option value="">Select Customer</option>
+                            @foreach($clients as $client)
+                            <option value="{{$client->id}}">{{$client->client_name}}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="input-group mb-3">
                         <input type="number" id="contact_number" class="form-control" placeholder="Enter Customer Number" required>
@@ -94,16 +99,16 @@
                     </div>
                     <div class="input-group mb-3">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="payment_type" id="payment_type" value="cash" checked>
-                            <label class="form-check-label" for="payment_type">Cash</label>
+                            <input class="form-check-input" type="radio" name="payment_cash" id="payment_type" value="cash" checked>
+                            <label class="payment_cash" for="payment_type">Cash</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="payment_type" id="payment_type" value="cheque">
-                            <label class="form-check-label" for="payment_type">Cheque</label>
+                            <input class="form-check-input" type="radio" name="payment_cheque" id="payment_type" value="cheque">
+                            <label class="payment_cheque" for="payment_type">Cheque</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="payment_type" id="payment_type" value="credit">
-                            <label class="form-check-label" for="payment_type">Credit</label>
+                            <input class="form-check-input" type="radio" name="payment_credit" id="payment_type" value="credit">
+                            <label class="payment_credit" for="payment_type">Credit</label>
                         </div>
                     </div>
                     <div class="input-group mb-3">
@@ -222,9 +227,7 @@
     $(".btn-save-payment").click(function() {
         var receivedAmount = $("#received_amount").val();
         var sale_id = $(".btn-payment").data('id');
-        var customer_name = $("#customer_name").val();
-        var customer_number = $("#contact_number").val();
-        var customer_vat = $("#customer_vat").val();
+        var customer_id = $("#customer_id").val();
         var payment_type = $("#payment_type").val();
         $.ajaxSetup({
             headers: {
@@ -235,11 +238,9 @@
             type: "POST",
             data: {
                 "sale_id": sale_id,
-                "customer_name": customer_name,
-                "customer_number": customer_number,
+                "customer_id": customer_id,
                 "received_amount": receivedAmount,
                 "payment_type": payment_type,
-                "customer_vat": customer_vat
             },
             url: '/cashier/savePayment',
             success: function(data) {
@@ -255,9 +256,25 @@
         });
     });
 
-    //price update
-    $("#input_price").keyup(function() {
-        alert("Hi");
+    //client info
+    $("#customer_id").on("change",function() {
+        var customer_id = $(this).val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "GET",
+            data: {
+                "customer_id": customer_id,
+            },
+            url: '/cashier/'+$(this).val(),
+            success: function(data) {
+                $("#contact_number").val(data.contact_number);
+                $("#customer_vat").val(data.customer_vat);
+            }
+        });
     });
 </script>
 

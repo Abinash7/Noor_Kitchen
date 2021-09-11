@@ -59,6 +59,7 @@ if (Auth::check()) {
     Route::middleware('auth', 'revalidate')->group(function () {
         //Cashier Controller Routes
         Route::get('/cashier', [CashierController::class, 'index']);
+        Route::get('/cashier/{customer_id}',[CashierController::class,'getCustomerDetail']);
         Route::post('/cashier/order', [CashierController::class, 'orderProduct']);
         Route::post('/cashier/confirmOrder', [CashierController::class, 'confirmOrder']);
         Route::post('/cashier/savePayment', [CashierController::class, 'savePayment']);

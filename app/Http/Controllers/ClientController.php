@@ -47,7 +47,7 @@ class ClientController extends Controller
             'client_name' => 'required|string',
             'client_address' => 'required|string',
             'contact_number' => 'required|integer',
-            'customer_vat' => 'required'
+            'customer_vat' => 'sometimes|nullable'
         ]);
     }
 }

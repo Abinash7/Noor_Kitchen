@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Client;
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Models\Stock;
@@ -14,7 +15,14 @@ class CashierController extends Controller
     public function index()
     {
         $category = Category::all();
-        return view('Backend.Cashier.Index')->with('categories', $category);
+        $client = Client::all();
+        return view('Backend.Cashier.Index')->with('categories', $category)->with('clients', $client);
+    }
+
+    public function getCustomerDetail($customer_id)
+    {
+        $client = Client::findorfail($customer_id);
+        return response()->json($client);
     }
 
     public function orderProduct(Request $request)
@@ -126,8 +134,7 @@ class CashierController extends Controller
             $product->save();
         }
         $sale = Sale::findorfail($saleID);
-        $sale->customer_name = $request->customer_name;
-        $sale->customer_number = $request->customer_number;
+        $sale->customer_id = $request->customer_id;
         $sale->total_received = $request->received_amount;
         $sale->change = ($request->received_amount - $sale->total_price);
         $sale->payment_type = $request->payment_type;
@@ -142,7 +149,7 @@ class CashierController extends Controller
 
     public function showReceipt($saleID)
     {
-        $sale = Sale::findorfail($saleID);
+        $sale = Sale::with('customer')->findorfail($saleID);
         $saleDetails = SaleDetail::where('sale_id', $saleID)->get();
         $user = User::findorfail($sale->user_id);
         return view('Backend.Cashier.Receipt')->with('sales', $sale)->with('saleDetails', $saleDetails)->with('user', $user);
@@ -174,7 +181,8 @@ class CashierController extends Controller
         $product = Stock::where('category_id', $category_id)->get();
         $html = '';
         foreach ($product as $prod) {
-            $html .= '
+            if ($prod->quantity > 0) {
+                $html .= '
             <div class="col-md-3 col-sm-3 text-center">
             <a class="btn btn-outline-secondary btn-menu" data-id="' . $prod->id . '" data-toggle="modal" data-target="#priceModal" style="width:100%;" >
             ' . $prod->product_name . '
@@ -185,6 +193,7 @@ class CashierController extends Controller
             </a>
             </div> 
             ';
+            }
         }
         return $html;
     }
