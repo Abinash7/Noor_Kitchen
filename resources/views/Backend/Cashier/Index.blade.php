@@ -90,6 +90,23 @@
                         <input type="number" id="contact_number" class="form-control" placeholder="Enter Customer Number" required>
                     </div>
                     <div class="input-group mb-3">
+                        <input type="number" id="customer_vat" class="form-control" placeholder="Enter Customer VAT" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="payment_type" id="payment_type" value="cash" checked>
+                            <label class="form-check-label" for="payment_type">Cash</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="payment_type" id="payment_type" value="cheque">
+                            <label class="form-check-label" for="payment_type">Cheque</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="payment_type" id="payment_type" value="credit">
+                            <label class="form-check-label" for="payment_type">Credit</label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Rs.</span>
                         </div>
@@ -185,46 +202,6 @@
         });
     });
 
-    //Increase Quantity
-    $("#product-list").on("click", ".btn-increase-quantity", function() {
-        var saleDetailID = $(this).data("id");
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "POST",
-            data: {
-                "saleDetailID": saleDetailID
-            },
-            url: "/cashier/increasequantity",
-            success: function(data) {
-                $("#product-list").html(data);
-            }
-        });
-    });
-
-    //Decrease Quantity
-    $("#product-list").on("click", ".btn-decrease-quantity", function() {
-        var saleDetailID = $(this).data("id");
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "POST",
-            data: {
-                "saleDetailID": saleDetailID
-            },
-            url: "/cashier/decreasequantity",
-            success: function(data) {
-                $("#product-list").html(data);
-            }
-        });
-    });
-
     //total Amount
     $("#product-list").on("click", ".btn-payment", function() {
         var totalAmount = $(this).attr('data-totalAmount');
@@ -247,6 +224,8 @@
         var sale_id = $(".btn-payment").data('id');
         var customer_name = $("#customer_name").val();
         var customer_number = $("#contact_number").val();
+        var customer_vat = $("#customer_vat").val();
+        var payment_type = $("#payment_type").val();
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -258,7 +237,9 @@
                 "sale_id": sale_id,
                 "customer_name": customer_name,
                 "customer_number": customer_number,
-                "received_amount": receivedAmount
+                "received_amount": receivedAmount,
+                "payment_type": payment_type,
+                "customer_vat": customer_vat
             },
             url: '/cashier/savePayment',
             success: function(data) {

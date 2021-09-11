@@ -23,6 +23,7 @@ class CreateSalesTable extends Migration
             $table->decimal('total_price')->default(0);
             $table->decimal('total_received')->default(0);
             $table->decimal('change')->default(0);
+            $table->string('payment_type')->default('cash');
             $table->string('sale_status')->default("unpaid");
             $table->timestamps();
         });

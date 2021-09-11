@@ -74,7 +74,7 @@ class CashierController extends Controller
                 <tr>
                     <td>' . ($key + 1) . '</td>
                     <td>' . $saleDetail->product_name . '</td>
-                    <td>' . $saleDetail->quantity .'</td>
+                    <td>' . $saleDetail->quantity . '</td>
                     <td>' . $saleDetail->product_price . '</td>
                     <td>' . ($saleDetail->product_price * $saleDetail->quantity) . '</td>';
             if ($saleDetail->status == "notConfirmed") {
@@ -130,7 +130,12 @@ class CashierController extends Controller
         $sale->customer_number = $request->customer_number;
         $sale->total_received = $request->received_amount;
         $sale->change = ($request->received_amount - $sale->total_price);
-        $sale->sale_status = "paid";
+        $sale->payment_type = $request->payment_type;
+        if ($sale->total_received <= ($sale->total_price - 20)) {
+            $sale->sale_status = "credit";
+        } else {
+            $sale->sale_status = "paid";
+        }
         $sale->save();
         return "/admin/cashier/showReceipt/" . $saleID;
     }
@@ -140,7 +145,7 @@ class CashierController extends Controller
         $sale = Sale::findorfail($saleID);
         $saleDetails = SaleDetail::where('sale_id', $saleID)->get();
         $user = User::findorfail($sale->user_id);
-        return view('Backend.Cashier.Receipt')->with('sales', $sale)->with('saleDetails', $saleDetails)->with('user',$user);
+        return view('Backend.Cashier.Receipt')->with('sales', $sale)->with('saleDetails', $saleDetails)->with('user', $user);
     }
 
     public function deleteDetail(Request $request)

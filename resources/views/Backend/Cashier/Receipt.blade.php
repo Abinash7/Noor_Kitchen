@@ -34,6 +34,8 @@
             <br>           
             <p>Sold By: {{$sales->user_name}}</p>
             <p class="right_side">Vehicle Number: {{$sales->vehicle_number}}</p>
+            <br>
+            <p>Payment Mode: {{$sales->payment_type}}</p>
         </div>
         <div class="receipt_body">
             <table class="tb-sale-details">

@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="customer_vat">Contact Number:</label>
+                                    <label for="customer_vat">VAT Number:</label>
                                     <input type="number" id="customer_vat" name="customer_vat" class="form-control" placeholder="Enter Client VAT Number">
                                     <div class="col-7">
                                         @if($errors->has('customer_vat'))
